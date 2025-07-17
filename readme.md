@@ -1,102 +1,127 @@
-```markdown
-# VLAN Audit Automation with Python (Cisco IOS)
-
-This project automates the auditing of VLAN configurations across multiple Cisco switches using SSH and Netmiko.
 
 ---
 
-## 📦 Project Structure
+```markdown
+# VLAN Audit Automation for Cisco Switches
+
+This project provides a Python-based automation solution to audit VLAN configurations from multiple Cisco IOS switches using SSH and the Netmiko library.
+
+---
+
+## 📁 Project Structure
 
 ```
 
-vlan\_audit\_project/
-├── switches.txt         # List of switch IPs (one per line)
-├── creds.txt            # Common SSH credentials (username & password)
-├── vlan\_audit.py        # Main Python script to run the audit
-├── vlan\_audit.csv       # Output CSV file (generated after script runs)
-├── errors.log           # Log file for any connection or command failures
-├── requirements.txt     # Required Python packages
-├── README.md            # Project documentation
+vlan_audit_project/  
+├── vlan_audit.py # Main script to collect VLAN data  
+├── switches.txt # List of switch IP addresses (one per line)  
+├── creds.txt # Common SSH credentials (username & password)  
+├── vlan_audit.csv # Output CSV file with VLAN info (auto-generated)  
+├── errors.log # Error log for connection or command issues (auto-generated)  
+├── requirements.txt # Python dependencies  
+├── README.md # This documentation file
 
 ````
 
 ---
 
-## ⚙️ Setup Instructions
+## 🔧 Requirements
 
-### 1. Install Python dependencies
+- Python 3.6+
+- Cisco IOS switches with SSH enabled
+- Netmiko library
 
-Create a virtual environment (optional but recommended), then install required packages:
+Install dependencies with:
 
 ```bash
 pip install -r requirements.txt
 ````
 
-### 2. Configure Input Files
+---
 
-#### `switches.txt`
+## 📄 Input Files
 
-List the IP addresses of Cisco switches, one per line:
+### `switches.txt`
+
+List of switch IP addresses:
 
 ```
 192.168.1.10
 192.168.1.11
 ```
 
-#### `creds.txt`
+### `creds.txt`
 
-Store your common SSH credentials in this format:
+Common credentials in key=value format:
 
 ```
 username=admin
 password=Cisco123
 ```
 
-> ⚠️ **Important:** Keep `creds.txt` secure. Do not share or commit it to version control.
+> ⚠️ **Keep this file secure.** Do not share or upload to version control.
 
 ---
 
-## ▶️ Running the Script
+## ▶️ How to Run
 
-Run the script with:
+Execute the script using:
 
 ```bash
 python vlan_audit.py
 ```
 
-* VLAN data will be saved to `vlan_audit.csv`
-* Any failed connections or errors will be logged in `errors.log`
+The script will:
+
+- SSH into each switch listed in `switches.txt`
+    
+- Retrieve the switch hostname using: `show run | include hostname`
+    
+- Retrieve VLAN information using: `show vlan brief`
+    
+- Save data into `vlan_audit.csv` with columns:
+    
+    - `switch_hostname`
+        
+    - `switch_ip`
+        
+    - `vlan_id`
+        
+    - `vlan_name`
+        
+- Log any connection or parsing errors in `errors.log`
+    
 
 ---
 
-## 📄 Output Format (`vlan_audit.csv`)
+## ✅ Output Example (`vlan_audit.csv`)
 
-The output CSV contains:
-
-| switch\_hostname | switch\_ip   | vlan\_id | vlan\_name |
-| ---------------- | ------------ | -------- | ---------- |
-| SW1              | 192.168.1.10 | 1        | default    |
-| SW1              | 192.168.1.10 | 10       | Sales      |
-| SW2              | 192.168.1.11 | 1        | default    |
-
----
-
-## 🛠 Requirements
-
-* Python 3.6+
-* Cisco IOS devices with SSH enabled
-* Netmiko library
+```csv
+switch_hostname,switch_ip,vlan_id,vlan_name
+SW1,192.168.1.10,1,default
+SW1,192.168.1.10,10,Sales
+SW2,192.168.1.11,1,default
+SW2,192.168.1.11,30,HR
+```
 
 ---
 
-## 📚 References
+## 🛠 Notes
 
-* [Netmiko GitHub](https://github.com/ktbyers/netmiko)
-* Cisco IOS command: `show vlan brief`, `show run | include hostname`
+- Script is designed for Cisco IOS switches
+    
+- Use in test environments before deploying in production
+    
+- Extendable for more commands or data formats
+    
 
 ---
 
-## 🧯 Disclaimer
+## 📚 Resources
 
-Use this script responsibly in production environments. Ensure that you test in a lab environment before widespread deployment.
+- [Netmiko on GitHub](https://github.com/ktbyers/netmiko)
+    
+- Cisco CLI command: `show vlan brief`, `show run | include hostname`
+    
 
+---
